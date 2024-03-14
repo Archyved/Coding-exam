@@ -15,6 +15,12 @@
         </p>
 
       </li>
+      <li v-if="tasks.length == 0 && !isTaskFetching" class="w-full text-center text-xl mt-10 text-black/30">
+        No Task/s to show.
+      </li>
+      <li v-if="isTaskFetching" class="w-full text-center text-xl mt-10 text-black/30 animate-pulse">
+        Fetching Tasks..
+      </li>
       <li v-for="(task, i) in tasks" :key="i"
         class="w-full grid items-center grid-cols-[80px,1fr,90px] px-4 py-2 border-b border-gray-200 rounded-t-lg gap-4">
         <input id="default-checkbox" type="checkbox" :checked="task.statusCompleted === 1"
@@ -45,7 +51,8 @@ export default {
   data() {
     return {
       tasks: [],
-      newTaskTitle: ''
+      newTaskTitle: '',
+      isTaskFetching: true
     }
   },
   created() {
@@ -56,7 +63,7 @@ export default {
       try {
         const getTasks = await Fetch.get('task')
         this.tasks = getTasks.data.data
-        console.log(getTasks.data.data)
+        this.isTaskFetching = false
       } catch (err) {
         console.log('Error Fetching Task: ', err)
       }
@@ -73,7 +80,6 @@ export default {
       }
     },
     async RemoveTask(id) {
-      console.log(id)
       try {
         const removeTask = await Fetch.delete(`task/${id}`);
         if (!removeTask.data.error) {
