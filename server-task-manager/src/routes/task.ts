@@ -3,10 +3,11 @@ const taskRoutes = express.Router()
 taskRoutes
 
   .get('/', async (req: Request, res: Response) => {
+    console.log("RETRIEVING TASKS")
     const Q = 'SELECT * FROM tasks';
     req.mysqlConnection.query(Q, [req.body.name], (err, results) => {
       if (err)
-        console.log(err)
+        res.status(500).send("Unknown Error Occurred")
       res.send({ data: results, error: null })
     })
   })
