@@ -2,6 +2,7 @@
 node_modules
 /dist
 
+/database/setup.sql
 
 # local env files
 .env.local

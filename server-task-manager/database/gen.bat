@@ -1,0 +1,1 @@
+type schema\*.sql tables\*.sql > setup.sql
