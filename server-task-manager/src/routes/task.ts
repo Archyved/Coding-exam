@@ -12,13 +12,18 @@ taskRoutes
     })
   })
   .post('/', async (req: Request, res: Response) => {
+    console.log("ADDING TASKS")
     const Q = 'INSERT INTO tasks (name) VALUES (?)';
+
+    if (!req.body.name) {
+      res.send({ data: null, error: 'Task Name is required' })
+    }
+
     req.mysqlConnection.query(Q, [req.body.name], (err, results) => {
       if (err)
-        console.log(err)
-      console.log(results)
+        res.status(500).send("Unknown Error Occurred")
+      res.send({ data: null, error: null })
     })
-    res.send({ error: null })
   })
 
 export default taskRoutes
